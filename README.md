@@ -14,7 +14,7 @@ with the lat-lon pair for the country code.
   If country code is not the specified country, it stores the id in NIR file.
 
 
-  Usage: scisca <iso-county_code> <YYYY-MM-DD>
+  Usage: scisca \<iso-county_code\> \<YYYY-MM-DD\>
 
 
   Example: scisca hu 2020-09-17
