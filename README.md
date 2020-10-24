@@ -9,7 +9,7 @@ If the coordinate is outside the area, the id gets stored in a file: NOT_IN_RECT
 If the coordinate is within the rectangle, script initiates a Nominatim reverse lookup
 with the lat-lon pair for the country code.
 
-  If country code is the specified country, it counts and stores the id id the data file MY_DATA_FILE.
+  If country code is the specified country, it counts and stores the id the data file MY_DATA_FILE.
 
   If country code is not the specified country, it stores the id in NIR file.
 
