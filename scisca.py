@@ -29,8 +29,8 @@ FILE_NAME = "data.csv"
 MY_DATA_FILE = Path(f"{FILE_PATH}{FILE_NAME}")
 RECT_REQ = "https://nominatim.openstreetmap.org/search.php?q="
 RECT_XY = [ # Lat Lon of the rectangle around Hungary 45.737128, 48.585257, 16.1138866, 22.8977094
-	'45.737128', '48.585257', # First coordinate
-	'16.1138866', '22.8977094'  # Second coordinate
+	45.737128, 48.585257, # coordinate X
+	16.1138866, 22.8977094  # coordinate Y
 ]
 # TEST_LATLON = [46.076,18.372]
 NOT_IN_RECT_IDS = "nirids.csv" # list of those IDs that are not within the rectangle
@@ -49,7 +49,7 @@ def get_country_boundaries(country):
 		print(f"[ERROR] Nominatim request failed for \"{country}\"\.")
 		return
 	nomi = country_response.json()
-	RECT_XY = nomi[0]["boundingbox"]
+	RECT_XY = [float(i) for i in nomi[0]["boundingbox"]]
 	print(f"[OK] Bounding box for {country.upper()} is set to {RECT_XY}")
 	return
 
@@ -127,7 +127,7 @@ def get_data(country, date):
 				print(f"\n[WARNING] id:{location_result[0]}: lat \"{location_result[1]}\" or lon \"{location_result[2]}\" could not be converted to float")
 				continue # skip to next file
 			percentage = round(i / len(match) * 10000)/100
-			if not (float(RECT_XY[0]) <= lat <= float(RECT_XY[1]) and float(RECT_XY[2]) <= lon <= float(RECT_XY[3])):
+			if not (RECT_XY[0] <= lat <= RECT_XY[1] and RECT_XY[2] <= lon <= RECT_XY[3]):
 				print(f"[OK] {percentage}%\t{i}/{len(match)}\tid [{location_result[0]}] is outside of the defined area, adding to NIR file   ", end="\r", flush=True)
 				nirfile.write(DEL.join([date]+location_result) + "\n")
 				continue # skip to next file
