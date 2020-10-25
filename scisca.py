@@ -114,9 +114,9 @@ def get_data(country, date):
 		print(f"[OK] Reading files in folder \"{date}\"...")
 		for i in range(len(match)):
 #			if i > 20: break                  # max amount of data in a day. For testing only, comment this out if you need all
-			if match[i][1] in nir_ids: continue     # nir_ids to be created yet
+			if match[i][1] in nir_ids: continue     # skip id if found in nir_ids
 			sensor_file = match[i][0]
-			location_result = 0                 # to make sure the variable exists even after get_lat_lon fails
+			location_result = 0                 # to make sure the variable exists even if get_lat_lon fails
 			location_result = get_lat_lon(datedir + sensor_file)
 			lat = 0.0
 			lon = 0.0
