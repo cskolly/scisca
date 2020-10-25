@@ -24,8 +24,8 @@ import sys
 from pathlib import Path
 
 DEL = "," # list delimiter
-COUNTRY = "hu"
-FILE_PATH = "sc/" # Has to end with a slash
+COUNTRY = "hu"     # default value, command line overwrites
+FILE_PATH = "sc/" # has to end with a slash
 FILE_NAME = "data.csv"
 MY_DATA_FILE = Path(f"{FILE_PATH}{COUNTRY}_{FILE_NAME}")
 RECT_REQ = "https://nominatim.openstreetmap.org/search.php?q="
@@ -33,7 +33,6 @@ RECT_XY = [ # Lat Lon of the rectangle around Hungary 45.737128, 48.585257, 16.1
 	45.737128, 48.585257, # coordinate X
 	16.1138866, 22.8977094  # coordinate Y
 ]
-# TEST_LATLON = [46.076,18.372]
 NOT_IN_RECT_IDS = "nirids.csv" # list of those IDs that are not within the rectangle
 ROOT_URL = "http://archive.sensor.community/" # Has to end with a slash
 DAYS = [6, 19] # Days of month, on which we request the data files
