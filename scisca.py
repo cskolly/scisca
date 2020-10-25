@@ -1,6 +1,8 @@
+#!/usr/bin/env python3
+#
 # SCISCA - Sensor Count In Sensor Community Archive
 #
-# Retrieves country boundary rectangle from openstreetmap's Nominatim service
+# Retrieves Country boundary rectangle from openstreetmap's Nominatim service
 # and retrieves CSV files from the SC archive to check a station's geo coordinate.
 # If the coordinate is outside the area, the id gets stored in a file: NOT_IN_RECT_IDS
 # If the coordinate is within the rectangle, script initiates a Nominatim reverse lookup
@@ -27,8 +29,8 @@ FILE_NAME = "data.csv"
 MY_DATA_FILE = Path(f"{FILE_PATH}{FILE_NAME}")
 RECT_REQ = "https://nominatim.openstreetmap.org/search.php?q="
 RECT_XY = [ # Lat Lon of the rectangle around Hungary 45.737128, 48.585257, 16.1138866, 22.8977094
-	'45.737128', '48.585257',
-	'16.1138866', '22.8977094'
+	45.737128, 48.585257, # First coordinate
+	16.1138866, 22.8977094  # Second coordinate
 ]
 # TEST_LATLON = [46.076,18.372]
 NOT_IN_RECT_IDS = "nirids.csv" # list of those IDs that are not within the rectangle
@@ -47,7 +49,7 @@ def get_country_boundaries(country):
 		print(f"[ERROR] Nominatim request failed for \"{country}\"\.")
 		return
 	nomi = country_response.json()
-	RECT_XY = nomi[0]["boundingbox"]
+	RECT_XY = map(int, nomi[0]["boundingbox"])
 	print(f"[OK] Bounding box for {country.upper()} is set to {RECT_XY}")
 	return
 
@@ -112,9 +114,9 @@ def get_data(country, date):
 		print(f"[OK] Reading files in folder \"{date}\"...")
 		for i in range(len(match)):
 #			if i > 20: break                  # max amount of data in a day. For testing only, comment this out if you need all
-			if match[i][1] in nir_ids: continue     # skip id if found in nir_ids
+			if match[i][1] in nir_ids: continue     # nir_ids to be created yet
 			sensor_file = match[i][0]
-			location_result = 0                 # to make sure the variable exists even if get_lat_lon fails
+			location_result = 0                 # to make sure the variable exists even after get_lat_lon fails
 			location_result = get_lat_lon(datedir + sensor_file)
 			lat = 0.0
 			lon = 0.0
