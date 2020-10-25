@@ -24,9 +24,10 @@ import sys
 from pathlib import Path
 
 DEL = "," # list delimiter
+COUNTRY = "hu"
 FILE_PATH = "sc/" # Has to end with a slash
 FILE_NAME = "data.csv"
-MY_DATA_FILE = Path(f"{FILE_PATH}{FILE_NAME}")
+MY_DATA_FILE = Path(f"{FILE_PATH}{COUNTRY}_{FILE_NAME}")
 RECT_REQ = "https://nominatim.openstreetmap.org/search.php?q="
 RECT_XY = [ # Lat Lon of the rectangle around Hungary 45.737128, 48.585257, 16.1138866, 22.8977094
 	45.737128, 48.585257, # coordinate X
@@ -38,8 +39,6 @@ ROOT_URL = "http://archive.sensor.community/" # Has to end with a slash
 DAYS = [6, 19] # Days of month, on which we request the data files
 NOMI_URL = "https://nominatim.openstreetmap.org/reverse.php" # add lat=XX&lon=YY&zoom=3&format=jsonv2
 DATES = [f"2019-{str(month).zfill(2)}-{str(day).zfill(2)}" for month in range(1, 13) for day in DAYS]     # {YEAR}-month-{DAYS} days in every month of the year
-COUNTRY = "hu"
-
 
 def get_country_boundaries(country):
 	global RECT_XY
