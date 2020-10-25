@@ -27,8 +27,8 @@ FILE_NAME = "data.csv"
 MY_DATA_FILE = Path(f"{FILE_PATH}{FILE_NAME}")
 RECT_REQ = "https://nominatim.openstreetmap.org/search.php?q="
 RECT_XY = [ # Lat Lon of the rectangle around Hungary 45.737128, 48.585257, 16.1138866, 22.8977094
-	'45.737128', '48.585257', # First coordinate
-	'16.1138866', '22.8977094'  # Second coordinate
+	'45.737128', '48.585257',
+	'16.1138866', '22.8977094'
 ]
 # TEST_LATLON = [46.076,18.372]
 NOT_IN_RECT_IDS = "nirids.csv" # list of those IDs that are not within the rectangle
