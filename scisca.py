@@ -38,6 +38,8 @@ ROOT_URL = "http://archive.sensor.community/" # Has to end with a slash
 DAYS = [6, 19] # Days of month, on which we request the data files
 NOMI_URL = "https://nominatim.openstreetmap.org/reverse.php" # add lat=XX&lon=YY&zoom=3&format=jsonv2
 DATES = [f"2019-{str(month).zfill(2)}-{str(day).zfill(2)}" for month in range(1, 13) for day in DAYS]     # {YEAR}-month-{DAYS} days in every month of the year
+COUNTRY = "hu"
+
 
 def get_country_boundaries(country):
 	global RECT_XY
@@ -83,9 +85,9 @@ def nominatim_lookup(my_lat, my_lon, *args): # Nominatim reverse lookup> lat,lon
 def get_nirids(): # read previously logged Not-In-Range ids into nir_ids
 	nir_file = 0
 	try:
-		nir_file = open(f"{FILE_PATH}{NOT_IN_RECT_IDS}", "r")
+		nir_file = open(f"{FILE_PATH}{COUNTRY}_{NOT_IN_RECT_IDS}", "r")
 	except:
-		print(f"[WARNING] Can't open Not-In-Rannge (NIR) file {FILE_PATH}{NOT_IN_RECT_IDS}")
+		print(f"[WARNING] Can't open Not-In-Range (NIR) file {FILE_PATH}{COUNTRY}_{NOT_IN_RECT_IDS}")
 		result = []
 		return result
 	nir_result = []
@@ -97,7 +99,7 @@ def get_nirids(): # read previously logged Not-In-Range ids into nir_ids
 #	print(result)
 	return nir_result
 
-def get_data(country, date):
+def get_data(date):
 	HU_COUNT = 0
 	datedir = f"{ROOT_URL}{date}/"
 	print(f"[OK] Processing folder \"{date}\". Waiting for archive response...")
@@ -108,7 +110,7 @@ def get_data(country, date):
 		return
 	match = re.findall("href=\"(.+?_(?:sds011|sps30|pms\d003|ppd42ns|hpm)_sensor_(\d+)(?:_indoor)?\.csv)\">", sensor_csv_files) # Get file names and ids in a list, RE groups
 	print(f"[OK] Found {len(match)} dust sensors")
-	get_country_boundaries(country)
+	get_country_boundaries(COUNTRY)
 	nir_ids = get_nirids()  # read previously logged Not-In-Range ids into nir_ids
 	with open(f"{FILE_PATH}{FILE_NAME}", "a") as hu_datafile, open(f"{FILE_PATH}{NOT_IN_RECT_IDS}", "a") as nirfile:
 		print(f"[OK] Reading files in folder \"{date}\"...")
@@ -134,7 +136,7 @@ def get_data(country, date):
 
 			print(f"[OK] {percentage}%\t{i}/{len(match)}\tid [{location_result[0]}] is in the area.\tCountry lookup:", end = " ")
 			nomi_country = nominatim_lookup(lat, lon)
-			if nomi_country == country:
+			if nomi_country == COUNTRY:
 				print(f"{nomi_country}               ")
 				HU_COUNT += 1
 				hu_datafile.write(DEL.join([date]+location_result+[nomi_country]) + "\n")
@@ -162,7 +164,8 @@ def main():
 	if len(sys.argv) <= 2:
 		print(f"usage: {sys.argv[0]} <iso-county_code> <YYYY-MM-DD>")
 	else:
-		get_data(sys.argv[1], sys.argv[2])
+		COUNTRY = sys.argv[1]
+		get_data(sys.argv[2])
 
 if __name__ == "__main__":
     main()
