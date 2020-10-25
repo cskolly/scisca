@@ -8,7 +8,7 @@ This (not so) quick and dirty script retrieves the CSV files from the Sensor Com
 ### step 1
 Script retrieves a country boundary rectangle (country boundary box) from Openstreetmap's Nominatim service for the specified iso country code. (eg. hu, de, be or at, etc.)
 ### step2 
-Then it retrieves the list of CSV files from the SC archive for the given date.
+Then it retrieves the list of CSV files from the SC archive for the given date. (this step takes a while)
 ### step 3
 Retrieve each CSV and If the geo coordinate (lat, lon) in the CSV is outside the boundary box the sensor ID gets stored in a file: NOT_IN_RECT_IDS
 To ease the load on the archive the CSVs for these sensor IDs will not be checked for future retrievals for other dates, as we know they're in other country.
