@@ -159,7 +159,7 @@ def main():
 #		get_data(date)
 #	get_data("2019-06-19")     # to test a specific date
 
-	if len(sys.argv) <= 1:
+	if len(sys.argv) <= 2:
 		print(f"usage: {sys.argv[0]} <iso-county_code> <YYYY-MM-DD>")
 	else:
 		get_data(sys.argv[1], sys.argv[2])
