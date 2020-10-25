@@ -142,7 +142,7 @@ def get_data(country, date):
 			else:
 				print(f"{country}, adding to NIR file")
 				nirfile.write(DEL.join([date]+location_result+[country]) + "\n")
-		print(f"\n[OK] Finished reading date \"{date}\", found {HU_COUNT} sensors in {country}.")
+		print(f"\n[OK] Finished reading date \"{date}\", found {HU_COUNT} sensor{{True:"s",False:""}[HU_COUNT==1]} in {country}.")
 
 def main():
 	current_path = os.getcwd()
