@@ -2,7 +2,7 @@
 #
 # SCISCA - Sensor Count In Sensor Community Archive
 #
-# Retrieves Country boundary rectangle from openstreetmap's Nominatim service
+# Retrieves country boundary rectangle from openstreetmap's Nominatim service
 # and retrieves CSV files from the SC archive to check a station's geo coordinate.
 # If the coordinate is outside the area, the id gets stored in a file: NOT_IN_RECT_IDS
 # If the coordinate is within the rectangle, script initiates a Nominatim reverse lookup
