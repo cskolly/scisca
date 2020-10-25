@@ -135,12 +135,12 @@ def get_data(country, date):
 			print(f"[OK] {percentage}%\t{i}/{len(match)}\tid [{location_result[0]}] is in the area.\tCountry lookup:", end = " ")
 			nomi_country = nominatim_lookup(lat, lon)
 			if nomi_country == country:
-				print(f"{country}               ")
+				print(f"{nomi_country}               ")
 				HU_COUNT += 1
 				hu_datafile.write(DEL.join([date]+location_result+[nomi_country]) + "\n")
 				hu_datafile.flush()  # to write to file immediately
 			else:
-				print(f"{country}, adding to NIR file")
+				print(f"{nomi_country}, adding to NIR file")
 				nirfile.write(DEL.join([date]+location_result+[nomi_country]) + "\n")
 		print(f"\n[OK] Finished reading date \"{date}\", found {HU_COUNT} sensors in {country}.")
 
