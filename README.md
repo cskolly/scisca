@@ -3,7 +3,7 @@
 
 ## Sensor Count In Sensor Community Archive
 
-This (not so) quick and dirty script retrieves the CSV files from the Sensor Community [archive](http://archive.sensor.community) and counts the number of dust sensors for a given date
+This (not so) quick and dirty script retrieves the CSV files from the Sensor Community [archive](http://archive.sensor.community) and counts the number of dust sensors for a given date in the specified country.
 
 ### step 1
 Script retrieves a country boundary rectangle (country boundary box) from Openstreetmap's Nominatim service for the specified iso country code. (eg. hu, de, be or at, etc.)
