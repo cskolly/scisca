@@ -142,7 +142,7 @@ def get_data(date):
 			else:
 				print(f"{nomi_country}, adding to NIR file")
 				nirfile.write(DEL.join([date]+location_result+[nomi_country]) + "\n")
-		print(f"\n[OK] Finished reading date \"{date}\", found {HU_COUNT} sensor{{True:"s",False:""}[HU_COUNT==1]} in {COUNTRY}.")
+		print(f"\n[OK] Finished reading date \"{date}\", found {HU_COUNT} sensors in {COUNTRY}.")
 
 def main():
 	global COUNTRY
