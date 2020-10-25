@@ -112,7 +112,7 @@ def get_data(date):
 	print(f"[OK] Found {len(match)} dust sensors")
 	get_country_boundaries(COUNTRY)
 	nir_ids = get_nirids()  # read previously logged Not-In-Range ids into nir_ids
-	with open(f"{FILE_PATH}{FILE_NAME}", "a") as hu_datafile, open(f"{FILE_PATH}{NOT_IN_RECT_IDS}", "a") as nirfile:
+	with open(f"{FILE_PATH}{FILE_NAME}", "a") as hu_datafile, open(f"{FILE_PATH}{COUNTRY}_{NOT_IN_RECT_IDS}", "a") as nirfile:
 		print(f"[OK] Reading files in folder \"{date}\"...")
 		for i in range(len(match)):
 #			if i > 20: break                  # max amount of data in a day. For testing only, comment this out if you need all
@@ -147,6 +147,7 @@ def get_data(date):
 		print(f"\n[OK] Finished reading date \"{date}\", found {HU_COUNT} sensors in {country}.")
 
 def main():
+	global COUNTRY
 	current_path = os.getcwd()
 	if not os.path.exists(FILE_PATH):
 		print(f"[OK] Creating data folder {current_path}/{FILE_PATH}")
