@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-#
 # SCISCA - Sensor Count In Sensor Community Archive
 #
 # Retrieves country boundary rectangle from openstreetmap's Nominatim service
