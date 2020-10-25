@@ -24,15 +24,15 @@ import sys
 from pathlib import Path
 
 DEL = "," # list delimiter
-FILE_PATH = "sc/" # Has to end with a slash
+COUNTRY = "hu"     # default value, command line overwrites
+FILE_PATH = "sc/" # has to end with a slash
 FILE_NAME = "data.csv"
-MY_DATA_FILE = Path(f"{FILE_PATH}{FILE_NAME}")
+MY_DATA_FILE = Path(f"{FILE_PATH}{COUNTRY}_{FILE_NAME}")
 RECT_REQ = "https://nominatim.openstreetmap.org/search.php?q="
 RECT_XY = [ # Lat Lon of the rectangle around Hungary 45.737128, 48.585257, 16.1138866, 22.8977094
-	'45.737128', '48.585257', # First coordinate
-	'16.1138866', '22.8977094'  # Second coordinate
+	45.737128, 48.585257, # coordinate X
+	16.1138866, 22.8977094  # coordinate Y
 ]
-# TEST_LATLON = [46.076,18.372]
 NOT_IN_RECT_IDS = "nirids.csv" # list of those IDs that are not within the rectangle
 ROOT_URL = "http://archive.sensor.community/" # Has to end with a slash
 DAYS = [6, 19] # Days of month, on which we request the data files
@@ -49,7 +49,7 @@ def get_country_boundaries(country):
 		print(f"[ERROR] Nominatim request failed for \"{country}\"\.")
 		return
 	nomi = country_response.json()
-	RECT_XY = nomi[0]["boundingbox"]
+	RECT_XY = [float(i) for i in nomi[0]["boundingbox"]]
 	print(f"[OK] Bounding box for {country.upper()} is set to {RECT_XY}")
 	return
 
@@ -83,9 +83,9 @@ def nominatim_lookup(my_lat, my_lon, *args): # Nominatim reverse lookup> lat,lon
 def get_nirids(): # read previously logged Not-In-Range ids into nir_ids
 	nir_file = 0
 	try:
-		nir_file = open(f"{FILE_PATH}{NOT_IN_RECT_IDS}", "r")
+		nir_file = open(f"{FILE_PATH}{COUNTRY}_{NOT_IN_RECT_IDS}", "r")
 	except:
-		print(f"[WARNING] Can't open Not-In-Rannge (NIR) file {FILE_PATH}{NOT_IN_RECT_IDS}")
+		print(f"[WARNING] Can't open Not-In-Range (NIR) file {FILE_PATH}{COUNTRY}_{NOT_IN_RECT_IDS}")
 		result = []
 		return result
 	nir_result = []
@@ -97,7 +97,7 @@ def get_nirids(): # read previously logged Not-In-Range ids into nir_ids
 #	print(result)
 	return nir_result
 
-def get_data(country, date):
+def get_data(date):
 	HU_COUNT = 0
 	datedir = f"{ROOT_URL}{date}/"
 	print(f"[OK] Processing folder \"{date}\". Waiting for archive response...")
@@ -108,9 +108,9 @@ def get_data(country, date):
 		return
 	match = re.findall("href=\"(.+?_(?:sds011|sps30|pms\d003|ppd42ns|hpm)_sensor_(\d+)(?:_indoor)?\.csv)\">", sensor_csv_files) # Get file names and ids in a list, RE groups
 	print(f"[OK] Found {len(match)} dust sensors")
-	get_country_boundaries(country)
+	get_country_boundaries(COUNTRY)
 	nir_ids = get_nirids()  # read previously logged Not-In-Range ids into nir_ids
-	with open(f"{FILE_PATH}{FILE_NAME}", "a") as hu_datafile, open(f"{FILE_PATH}{NOT_IN_RECT_IDS}", "a") as nirfile:
+	with open(f"{MY_DATA_FILE}", "a") as hu_datafile, open(f"{FILE_PATH}{COUNTRY}_{NOT_IN_RECT_IDS}", "a") as nirfile:
 		print(f"[OK] Reading files in folder \"{date}\"...")
 		for i in range(len(match)):
 #			if i > 20: break                  # max amount of data in a day. For testing only, comment this out if you need all
@@ -127,24 +127,25 @@ def get_data(country, date):
 				print(f"\n[WARNING] id:{location_result[0]}: lat \"{location_result[1]}\" or lon \"{location_result[2]}\" could not be converted to float")
 				continue # skip to next file
 			percentage = round(i / len(match) * 10000)/100
-			if not (float(RECT_XY[0]) <= lat <= float(RECT_XY[1]) and float(RECT_XY[2]) <= lon <= float(RECT_XY[3])):
+			if not (RECT_XY[0] <= lat <= RECT_XY[1] and RECT_XY[2] <= lon <= RECT_XY[3]):
 				print(f"[OK] {percentage}%\t{i}/{len(match)}\tid [{location_result[0]}] is outside of the defined area, adding to NIR file   ", end="\r", flush=True)
 				nirfile.write(DEL.join([date]+location_result) + "\n")
 				continue # skip to next file
 
 			print(f"[OK] {percentage}%\t{i}/{len(match)}\tid [{location_result[0]}] is in the area.\tCountry lookup:", end = " ")
-			country = nominatim_lookup(lat, lon)
-			if country == "hu":
-				print(f"{country}               ")
+			nomi_country = nominatim_lookup(lat, lon)
+			if nomi_country == COUNTRY:
+				print(f"{nomi_country}               ")
 				HU_COUNT += 1
-				hu_datafile.write(DEL.join([date]+location_result+[country]) + "\n")
+				hu_datafile.write(DEL.join([date]+location_result+[nomi_country]) + "\n")
 				hu_datafile.flush()  # to write to file immediately
-			else:
-				print(f"{country}, adding to NIR file")
-				nirfile.write(DEL.join([date]+location_result+[country]) + "\n")
-		print(f"\n[OK] Finished reading date \"{date}\", found {HU_COUNT} sensor{{True:"s",False:""}[HU_COUNT==1]} in {country}.")
+			e
+				print(f"{nomi_country}, adding to NIR file")
+				nirfile.write(DEL.join([date]+location_result+[nomi_country]) + "\n")
+		print(f"\n[OK] Finished reading date \"{date}\", found {HU_COUNT} sensor{{True:"s",False:""}[HU_COUNT==1]} in {COUNTRY}.")
 
 def main():
+	global COUNTRY
 	current_path = os.getcwd()
 	if not os.path.exists(FILE_PATH):
 		print(f"[OK] Creating data folder {current_path}/{FILE_PATH}")
@@ -162,7 +163,8 @@ def main():
 	if len(sys.argv) <= 2:
 		print(f"usage: {sys.argv[0]} <iso-county_code> <YYYY-MM-DD>")
 	else:
-		get_data(sys.argv[1], sys.argv[2])
+		COUNTRY = sys.argv[1]
+		get_data(sys.argv[2])
 
 if __name__ == "__main__":
     main()

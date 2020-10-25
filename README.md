@@ -10,9 +10,14 @@ Script retrieves a country boundary rectangle (country boundary box) from Openst
 ### step2 
 Then it retrieves the list of CSV files from the SC archive for the given date. (this step takes a while)
 ### step 3
-Retrieve each CSV and if the geo coordinate (lat, lon) in the CSV is outside the boundary box the sensor ID gets stored in a file: NOT_IN_RECT_IDS
+Retrieve each CSV and if the geo coordinate (lat, lon) in the CSV is outside the boundary box the sensor ID gets stored in a file: NOT_IN_RECT_IDS.
 To ease the load on the archive the CSVs for these sensor IDs will not be checked for future retrievals for other dates, as we know they're in other country.
-(Well, that means that the ID is going to be ignored even if the sensor has moved to the specified country at any later time.)   
+
+This means that the first date takes a lot of time and once we know what to ignore the additional dates are going to be much faster.
+
+(Well, that means that the ID is going to be ignored even if the sensor has moved to the specified country at any later time.)
+
+
 ### step 4
 If the coordinate is within the rectangle, script initiates a Nominatim reverse lookup with the lat-lon pair to check the actual country code.
 #### step 4.1
