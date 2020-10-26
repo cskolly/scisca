@@ -13,7 +13,7 @@ Then it retrieves the list of CSV files from the SC archive for the given date. 
 Retrieve each CSV. If the geo coordinate (lat, lon) in the CSV is outside the boundary box, the sensor ID gets stored in a file: NOT_IN_RECT_IDS.
 To ease the load on the archive the CSVs for these sensor IDs will not be checked for future retrievals for other dates, as we already know they're in another country.
 
-This means that the first date takes a lot of time, but once we know what to ignore the additional dates are going to be much faster.
+This means that the first date takes a lot of time and once we know what to ignore the additional dates are going to be much faster.
 
 (Well, that means that the ID is going to be ignored even if the sensor has moved to the specified country at any later time.)
 
