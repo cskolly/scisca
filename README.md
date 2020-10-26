@@ -26,7 +26,7 @@ If country code is the specified country, it counts and stores the id the data f
   If country code is not the specified country, it stores the id in NOT_IN_RECT_IDS file.
 
 
-  __Usage:__ `scisca \<iso-county_code\> \<YYYY-MM-DD\>`
+  __Usage:__ `scisca <iso-county_code> <YYYY-MM-DD>`
 
 
   __Example:__ `scisca hu 2020-09-17`
