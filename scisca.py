@@ -10,7 +10,7 @@
 #
 #   If country code is the specified country, it counts and stores the id in the
 #    data file MY_DATA_FILE.
-#	If country code is not the specified country, it stores the id in NIR file.
+#   If country code is not the specified country, it stores the id in NIR file.
 #
 #  Usage: scisca <iso-county_code> <YYYY-MM-DD>
 #
@@ -24,7 +24,7 @@ import sys
 from pathlib import Path
 
 DEL = "," # list delimiter
-COUNTRY = "hu"     # default value, command line overwrites
+COUNTRY = "hu"     # default value, command line overrides
 FILE_PATH = "sc/" # has to end with a slash
 FILE_NAME = "data.csv"
 MY_DATA_FILE = Path(f"{FILE_PATH}{COUNTRY}_{FILE_NAME}")
