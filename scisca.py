@@ -33,9 +33,9 @@ RECT_XY = [ # Lat Lon of the rectangle around Hungary 45.737128, 48.585257, 16.1
 	45.737128, 48.585257, # coordinate X
 	16.1138866, 22.8977094  # coordinate Y
 ]
-NOT_IN_RECT_IDS = "nirids.csv" # list of those IDs that are not within the rectangle
+NOT_IN_RECT_IDS = "nirids.csv" # list of those IDs that are known not to be within the rectangle
 ROOT_URL = "http://archive.sensor.community/" # Has to end with a slash
-DAYS = [6, 19] # Days of month, on which we request the data files
+DAYS = [6, 19] # Days of month, on which we request the data files (sampling from these days only)
 NOMI_URL = "https://nominatim.openstreetmap.org/reverse.php" # add lat=XX&lon=YY&zoom=3&format=jsonv2
 DATES = [f"2019-{str(month).zfill(2)}-{str(day).zfill(2)}" for month in range(1, 13) for day in DAYS]     # {YEAR}-month-{DAYS} days in every month of the year
 
@@ -168,3 +168,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
